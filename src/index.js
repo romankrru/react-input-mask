@@ -20,6 +20,7 @@ const InputMask = forwardRef(function InputMask(props, forwardedRef) {
     children,
     mask,
     maskPlaceholder,
+    formatChars,
     beforeMaskedStateChange,
     ...restProps
   } = props;
@@ -27,7 +28,7 @@ const InputMask = forwardRef(function InputMask(props, forwardedRef) {
   validateMaxLength(props);
   validateMaskPlaceholder(props);
 
-  const maskUtils = new MaskUtils({ mask, maskPlaceholder });
+  const maskUtils = new MaskUtils({ mask, maskPlaceholder, formatChars });
 
   const isMasked = !!mask;
   const isEditable = !restProps.disabled && !restProps.readOnly;
@@ -311,6 +312,7 @@ InputMask.propTypes = {
     ),
   ]),
   maskPlaceholder: PropTypes.string,
+  formatChars: PropTypes.objectOf(PropTypes.instanceOf(RegExp)),
   onFocus: PropTypes.func,
   onBlur: PropTypes.func,
   onChange: PropTypes.func,

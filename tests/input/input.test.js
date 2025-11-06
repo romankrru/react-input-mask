@@ -1372,4 +1372,39 @@ describe("react-input-mask", () => {
     expect(getInputSelection(input).start).to.equal(5);
     expect(getInputSelection(input).end).to.equal(5);
   });
+
+  it("should handle custom formatChars prop", async () => {
+    const customFormatChars = {
+      W: /[A-Z]/, // uppercase letters only
+      "#": /[0-9]/, // digits only
+      A: /[A-Za-z]/, // any letter
+    };
+
+    const { input } = createInput(
+      <Input
+        mask="WWWW-####-AAAA"
+        placeholder="ABCD-1234-EfGh"
+        formatChars={customFormatChars}
+      />,
+    );
+
+    await simulateFocus(input);
+
+    await simulateInput(input, "abcd");
+    expect(input.value).to.equal("____-____-____");
+    await simulateInput(input, "ABCD");
+    expect(input.value).to.equal("ABCD-____-____");
+
+    await setCursorPosition(input, 5);
+    await simulateInput(input, "AbCd");
+    expect(input.value).to.equal("ABCD-____-____");
+    await simulateInput(input, "1234");
+    expect(input.value).to.equal("ABCD-1234-____");
+
+    await setCursorPosition(input, 10);
+    await simulateInput(input, "42");
+    expect(input.value).to.equal("ABCD-1234-____");
+    await simulateInput(input, "EfGh");
+    expect(input.value).to.equal("ABCD-1234-EfGh");
+  });
 });

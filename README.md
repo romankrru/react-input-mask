@@ -51,6 +51,7 @@ function DateInput(props) {
 |          **[`alwaysShowMask`](#alwaysshowmask)**          |            `{Boolean}`            | `false` | Whether mask prefix and placeholder should be displayed when input is empty and has no focus |
 | **[`beforeMaskedStateChange`](#beforemaskedstatechange)** |           `{Function}`            |         | Function to modify value and selection before applying mask                                  |
 |                **[`children`](#children)**                |         `{ReactElement}`          |         | Custom render function for integration with other input components                           |
+|              **[`formatChars`](#formatchars)**            |    `{Object<String, RegExp>}`     |         | Custom format character definitions                                                          |
 
 ### `mask`
 
@@ -70,7 +71,7 @@ Simple masks can be defined as strings. The following characters will define mas
 
 Any format character can be escaped with a backslash.<br /><br />
 
-More complex masks can be defined as an array of regular expressions and constant characters.
+More complex masks can be defined as an array of regular expressions and constant characters. Additionally, you can define custom format characters using the [`formatChars`](#formatchars) prop replace the default format characters.
 
 ```jsx
 // Canadian postal code mask
@@ -138,6 +139,38 @@ return (
 ```
 
 Please note that `beforeMaskedStateChange` executes more often than `onChange` and must be pure.
+
+### `formatChars`
+
+The `formatChars` prop allows you to define custom format characters for your mask patterns. By default, the component uses the following format characters:
+
+| Character | Allowed input |
+| :-------: | :-----------: |
+|     9     |      0-9      |
+|     a     |   a-z, A-Z    |
+|    \*     | 0-9, a-z, A-Z |
+
+When you provide a `formatChars` object, it **completely replaces** the default format characters. This means that if you want to use any of the default characters, you must redefine them in your custom `formatChars` object.
+
+```jsx
+// Custom format characters
+const customFormatChars = {
+  w: /[a-z]/,        // lowercase letters only
+  W: /[A-Z]/,        // uppercase letters only
+  '#': /[0-9]/,      // digits only
+};
+
+<InputMask
+  mask="WWWW-####-wwww"
+  placeholder="ABCD-1234-efgh"
+  formatChars={customFormatChars}
+/>
+```
+
+In the example above, we've defined custom format characters:
+- `W` accepts only uppercase letters
+- `#` accepts only digits
+- `w` accepts only lowercase letters
 
 ### `children`
 
