@@ -71,7 +71,7 @@ Simple masks can be defined as strings. The following characters will define mas
 
 Any format character can be escaped with a backslash.<br /><br />
 
-More complex masks can be defined as an array of regular expressions and constant characters. Additionally, you can define custom format characters using the [`formatChars`](#formatchars) prop replace the default format characters.
+More complex masks can be defined as an array of regular expressions and constant characters. Additionally, you can define custom format characters using the [`formatChars`](#formatchars) prop to replace the default format characters.
 
 ```jsx
 // Canadian postal code mask
