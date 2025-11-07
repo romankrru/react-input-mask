@@ -1407,4 +1407,19 @@ describe("react-input-mask", () => {
     await simulateInput(input, "EfGh");
     expect(input.value).to.equal("ABCD-1234-EfGh");
   });
+
+  it("should replace default formatChars when custom ones are provided", async () => {
+    const customFormatChars = {
+      W: /[A-Z]/,
+    };
+
+    const { input } = createInput(
+      <Input mask="999W" formatChars={customFormatChars} />,
+    );
+
+    await simulateFocus(input);
+    await simulateInput(input, "123A");
+    // '999' should remain since '9' is not defined in customFormatChars
+    expect(input.value).to.equal("999A");
+  });
 });
